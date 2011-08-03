@@ -4,6 +4,7 @@ import de.seideman.dams.activities.Dams;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.widget.Button;
@@ -51,14 +52,36 @@ public class DamsActivityTest extends ActivityInstrumentationTestCase2<Dams> {
 		assertNotNull(searchButton);
 	}
 	
+	@UiThreadTest
+	public void testOrientation(){
+			
+		int x1 = spin1.getScrollX();
+		int y1 = spin1.getScrollY();
+		
+		int x2 = spin2.getScrollX();
+		int y2 = spin2.getScrollY();
+		
+		int x3 = searchText.getScrollX();
+		int y3 = searchText.getScrollY();
+		
+		int x4 = searchButton.getScrollX();
+		int y4 = searchButton.getScrollY();
+		
+		damsActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		
+		assertEquals(x1,spin1.getScrollX());
+		assertEquals(y1,spin1.getScrollY());
+		assertEquals(x2,spin2.getScrollX());
+		assertEquals(y2,spin2.getScrollY());
+		assertEquals(x3,searchText.getScrollX());
+		assertEquals(y3,searchText.getScrollY());
+		assertEquals(x4,searchButton.getScrollX());
+		assertEquals(y4,searchButton.getScrollY());
+	}
 	
 	@UiThreadTest
 	public void testOnPause(){
 		Instrumentation inst = this.getInstrumentation();
-		
-		spin1 = (Spinner) damsActivity.findViewById(de.seideman.dams.activities.R.id.spinner1);
-		spin2 = (Spinner) damsActivity.findViewById(de.seideman.dams.activities.R.id.spinner2);
-		searchText = (EditText)damsActivity.findViewById(de.seideman.dams.activities.R.id.textSearchValue);
 		
 		spin1.setSelection(TEST_STATE_PAUSE_POS1);
 		spin2.setSelection(TEST_STATE_PAUSE_POS2);

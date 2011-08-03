@@ -45,6 +45,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		
 		assertNotNull(userText);
 		assertNotNull(passText);
+		assertEquals("",userText.getText().toString());
+		assertEquals("",passText.getText().toString());
 		assertNotNull(loginButton);
 	}
 	
@@ -60,6 +62,43 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		} catch (EmptyInputException e) {
 			assertTrue(e.toString(),true);
 		}		
+	}
+	
+	@UiThreadTest
+	public void testOnPause(){
+		Instrumentation inst = this.getInstrumentation();
+		
+		userText.setText(TEST_STATE_USER);
+		passText.setText(TEST_STATE_PASS);
+		
+		inst.callActivityOnPause(loginActivity);
+		
+		userText.setText("Other User");
+		passText.setText("Other Pass");
+		
+		inst.callActivityOnResume(loginActivity);
+			
+		assertEquals(TEST_STATE_USER,userText.getText().toString());
+		assertEquals(TEST_STATE_PASS,passText.getText().toString());
+		
+	}
+	
+	@UiThreadTest
+	public void testOnDestroy(){
+		
+		userText = (EditText) loginActivity.findViewById(de.seideman.dams.activities.R.id.textUser);
+		passText = (EditText) loginActivity.findViewById(de.seideman.dams.activities.R.id.textPass);
+		
+		userText.setText(TEST_STATE_USER);
+		passText.setText(TEST_STATE_PASS);
+		
+				
+		loginActivity.finish();
+		loginActivity = getActivity();
+					
+		assertEquals("",userText.getText().toString());
+		assertEquals("",passText.getText().toString());
+		
 	}
 	
 	@UiThreadTest
