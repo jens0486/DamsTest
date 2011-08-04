@@ -52,7 +52,6 @@ public class DamsActivityTest extends ActivityInstrumentationTestCase2<Dams> {
 		assertNotNull(searchButton);
 	}
 	
-	@UiThreadTest
 	public void testOrientation(){
 			
 		int x1 = spin1.getScrollX();
@@ -67,8 +66,11 @@ public class DamsActivityTest extends ActivityInstrumentationTestCase2<Dams> {
 		int x4 = searchButton.getScrollX();
 		int y4 = searchButton.getScrollY();
 		
+		int orientation = damsActivity.getRequestedOrientation();
+		
 		damsActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
+		assertNotSame(orientation,damsActivity.getRequestedOrientation());
 		assertEquals(x1,spin1.getScrollX());
 		assertEquals(y1,spin1.getScrollY());
 		assertEquals(x2,spin2.getScrollX());
@@ -124,7 +126,7 @@ public class DamsActivityTest extends ActivityInstrumentationTestCase2<Dams> {
 	@UiThreadTest
 	public void testScanResult(){
 		
-		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+		Intent intent = new Intent("TEST");
 		//intent.putExtra("RESULT_OK", true);
 		intent.putExtra("SCAN_RESULT", TEST_STATE_RESULT_POS1);
 		searchText = (EditText)damsActivity.findViewById(de.seideman.dams.activities.R.id.textSearchValue);

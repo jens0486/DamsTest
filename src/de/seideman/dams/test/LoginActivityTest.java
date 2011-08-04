@@ -49,8 +49,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		assertEquals("",passText.getText().toString());
 		assertNotNull(loginButton);
 	}
-	
-	
+		
 	public void testCheckWebService(){
 		loginActivity.setNet(null);
 		
@@ -79,28 +78,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		inst.callActivityOnResume(loginActivity);
 			
 		assertEquals(TEST_STATE_USER,userText.getText().toString());
-		assertEquals(TEST_STATE_PASS,passText.getText().toString());
-		
-	}
-	
-	@UiThreadTest
-	public void testOnDestroy(){
-		
-		userText = (EditText) loginActivity.findViewById(de.seideman.dams.activities.R.id.textUser);
-		passText = (EditText) loginActivity.findViewById(de.seideman.dams.activities.R.id.textPass);
-		
-		userText.setText(TEST_STATE_USER);
-		passText.setText(TEST_STATE_PASS);
-		
-				
-		loginActivity.finish();
-		loginActivity = getActivity();
-					
-		assertEquals("",userText.getText().toString());
 		assertEquals("",passText.getText().toString());
-		
 	}
-	
+
 	@UiThreadTest
 	public void testEmptyText(){
 		userText.setText("");
@@ -114,7 +94,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		}
 	}
 	
-	@UiThreadTest
 	public void testOrientation(){
 			
 		int x1 = passText.getScrollX();
@@ -125,9 +104,11 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<Login> {
 		
 		int x3 = loginButton.getScrollX();
 		int y3 = loginButton.getScrollY();
+		int orientation = loginActivity.getRequestedOrientation();
 		
 		loginActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
+		assertNotSame(orientation,loginActivity.getRequestedOrientation());
 		assertEquals(x1,passText.getScrollX());
 		assertEquals(y1,passText.getScrollY());
 		assertEquals(x2,userText.getScrollX());
